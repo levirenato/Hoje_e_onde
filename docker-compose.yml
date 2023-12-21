@@ -3,38 +3,38 @@ version: '3.3'
 services:
 
   frontend:
-    build: /frontend
+    build: frontend
     command: sh -c "npm install && npm run build && npm run start dev"
     container_name: heo-front
     ports:
       - "3006:3006"
     volumes:
-      - /frontend:/home/node/app
+      - ./frontend:/home/node/app
     depends_on:
       - backend
 
   backend:
-    build: /backend
+    build: backend
     command: sh -c "npm install && npm run build && npm run start:dev"
     container_name: heo-back
     ports:
       - "3000:3000"
       - "5555:5555"
     volumes:
-      - /backend:/home/node/app
+      - ./backend:/home/node/app
     depends_on:
       - db
 
   db:
-    build: /database
+    build: database
     container_name: heo-db
     restart: always
     tty: true
     ports:
       - "3308:3306"
     volumes:
-      - /database/dbdata:/var/lib/mariadb/data
-      - /database/init.sql:/data/aplication/init.sql
+      - ./database/dbdata:/var/lib/mariadb/data
+      - ./database/init.sql:/data/aplication/init.sql
     command: --init-file /data/aplication/init.sql
     environment:
       MARIADB_ROOT_PASSWORD: 123
